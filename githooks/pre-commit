@@ -9,6 +9,7 @@ if [ "${STAGED_GO_FILES}" = "" ]; then
   exit 0
 fi
 
+GO_FMT=${GOROOT}/bin/gofmt
 GO_LINT=${GOPATH}/bin/golint
 GO_IMPORTS=${GOPATH}/bin/goimports
 
@@ -16,6 +17,9 @@ PASS=true
 
 for FILE in ${STAGED_GO_FILES}
 do
+  # Run go fmt
+  $GO_FMT -w "${FILE}"
+
   # Run go imports on the staged file
   $GO_IMPORTS -w "${FILE}"
 
