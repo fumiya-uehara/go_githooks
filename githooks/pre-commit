@@ -13,8 +13,19 @@ GO_FMT=${GOROOT}/bin/gofmt
 GO_LINT=${GOPATH}/bin/golint
 GO_IMPORTS=${GOPATH}/bin/goimports
 
-PASS=true
+# Check for tools
+if [ ! -x "${GO_LINT}" ]; then
+  printf "\t\033[41mPlease install golint\033[0m (go get -u golang.org/x/lint/golint)"
+  exit 1
+fi
 
+if [ ! -x "${GO_IMPORTS}" ]; then
+  printf "\t\033[41mPlease install goimports\033[0m (go get golang.org/x/tools/cmd/goimports)"
+  exit 1
+fi
+
+
+PASS=true
 for FILE in ${STAGED_GO_FILES}
 do
   # Run go fmt
