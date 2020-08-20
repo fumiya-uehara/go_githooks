@@ -1,0 +1,40 @@
+#!/bin/sh
+# base_author: https://gist.github.com/radlinskii/0ba6ec694b1e590d8457c98a358f335f
+# base_author_blog: https://medium.com/@radlinskii/writing-the-pre-commit-git-hook-for-go-files-810f8d5f1c6f
+# base_authorのシェルを一部変更しています。
+
+STAGED_GO_FILES=$(git diff --cached --name-only | grep ".go$")
+
+if [ "${STAGED_GO_FILES}" = "" ]; then
+  exit 0
+fi
+
+GO_LINT=${GOPATH}/bin/golint
+GO_IMPORTS=${GOPATH}/bin/goimports
+
+PASS=true
+
+for FILE in ${STAGED_GO_FILES}
+do
+  # Run go imports on the staged file
+  $GO_IMPORTS -w "${FILE}"
+
+  # Run go lint on the staged file and check the exit status
+  $GO_LINT "-set_exit_status" "${FILE}"
+  if [ ${?} = 1 ]; then
+    printf "\t\033[31m go lint %s\033[0m \033[0;30m\033[41m FAILURE!\033[0m\n" "${FILE}"
+    PASS=false
+  else
+    printf "\t\033[32m go lint %s\033[0m \033[0;30m\033[42m PASS\033[0m\n" "${FILE}"
+  fi
+
+done
+
+if ! $PASS; then
+  printf "\033[0;30m\033[41mCOMMIT FAILED\033[0m\n"
+  exit 1
+else
+  printf "\033[0;30m\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit 0
