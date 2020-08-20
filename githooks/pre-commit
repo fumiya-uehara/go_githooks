@@ -3,7 +3,11 @@
 # base_author_blog: https://medium.com/@radlinskii/writing-the-pre-commit-git-hook-for-go-files-810f8d5f1c6f
 # base_authorのシェルを一部変更しています。
 
+printf "START\n"
+
 STAGED_GO_FILES=$(git diff --cached --name-only | grep ".go$")
+
+printf "staged files: %s\n" "${STAGED_GO_FILES}"
 
 if [ "${STAGED_GO_FILES}" = "" ]; then
   exit 0
@@ -24,7 +28,7 @@ if [ ! -x "${GO_IMPORTS}" ]; then
   exit 1
 fi
 
-
+printf "before iteration\n"
 PASS=true
 for FILE in ${STAGED_GO_FILES}
 do
