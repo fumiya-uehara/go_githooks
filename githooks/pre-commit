@@ -30,6 +30,7 @@ for FILE in ${STAGED_GO_FILES}
 do
   # Run go fmt
   go fmt "${FILE}"
+  ech "${?}"
 
   # Run go imports on the staged file
   $GO_IMPORTS -w "${FILE}"
