@@ -2,5 +2,4 @@ package main
 
 import "fmt"
 
-func main() {fmt.Println("sagedg")}
-
+func main() { fmt.Println("sagedg") }

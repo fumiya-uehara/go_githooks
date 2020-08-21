@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# TODO 一時的にzshにしている。全ての環境で利用できるように修正が必要。
 # base_author: https://gist.github.com/radlinskii/0ba6ec694b1e590d8457c98a358f335f
 # base_author_blog: https://medium.com/@radlinskii/writing-the-pre-commit-git-hook-for-go-files-810f8d5f1c6f
 # base_authorのシェルを一部変更しています。
@@ -9,7 +10,6 @@ if [ "${STAGED_GO_FILES}" = "" ]; then
   exit 0
 fi
 
-GO_FMT="${GOROOT}/bin/gofmt"
 GO_LINT="${GOPATH}/bin/golint"
 GO_IMPORTS="${GOPATH}/bin/goimports"
 
@@ -29,7 +29,7 @@ PASS=true
 for FILE in ${STAGED_GO_FILES}
 do
   # Run go fmt
-  $GO_FMT -w "${FILE}"
+  go fmt "${FILE}"
 
   # Run go imports on the staged file
   $GO_IMPORTS -w "${FILE}"
