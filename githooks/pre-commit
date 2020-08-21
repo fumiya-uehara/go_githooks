@@ -46,6 +46,8 @@ do
 
 done
 
+exit 1
+
 if ! $PASS; then
   printf "\033[0;30m\033[COMMIT FAILED\033[0m\n"
   exit 1
